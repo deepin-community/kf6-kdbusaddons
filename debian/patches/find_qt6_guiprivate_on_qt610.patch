@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8e66688..65218e3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -22,6 +22,13 @@ set(REQUIRED_QT_VERSION 6.5.0)
+ find_package(Qt6DBus ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+ find_package(Qt6Gui ${REQUIRED_QT_VERSION} CONFIG) # qtx11extras_p.h
+ 
++# Since Qt 6.10 private module targets ship as standalone CMake packages and
++# are no longer auto-created by the module's targets file, so fetch the
++# private package explicitly for Qt >= 6.10 (backport from upstream master).
++if (Qt6Gui_VERSION VERSION_GREATER_EQUAL "6.10.0")
++    find_package(Qt6GuiPrivate ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
++endif()
++
+ include(GenerateExportHeader)
+ include(CMakePackageConfigHelpers)
+ include(ECMSetupVersion)
